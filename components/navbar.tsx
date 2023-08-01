@@ -8,15 +8,15 @@ import { cn } from '@/lib/utils';
 import { UserButton } from '@clerk/nextjs';
 import { Button } from '@/components/ui/button';
 import { ModeToggle } from '@/components/mode-toggle';
+import { MobileSidebar } from '@/components/mobile-sidebar';
 
 const font = Poppins({ weight: '600', subsets: ['latin'] });
 
 export const Navbar = () => {
 	return (
-		<div className="fixed w-full z-50 flex justify-between items-center py-2 px-4 border-b border-primary/10 bg-secondary">
+		<div className="fixed w-full z-50 flex justify-between items-center py-2 px-4 border-b border-primary/10 bg-secondary h-16">
 			<div className="flex items-center">
-				{/* 'block' on mobile, 'hidden' in middle devices */}
-				<Menu className="block md:hidden" />
+				<MobileSidebar />
 				<Link href="/">
 					<h1
 						className={cn(
