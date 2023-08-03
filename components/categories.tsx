@@ -24,7 +24,7 @@ export const Categories = ({ data }: CategoriesProps) => {
 				url: window.location.href,
 				query,
 			},
-			{ skipNull: false }
+			{ skipNull: true }
 		);
 
 		// categoryId === undefined --> remove categoryId from query (display all categories)
