@@ -20,17 +20,12 @@ const CompanionIdPage = async ({ params }: CompanionIdPageProps) => {
 	const companion = await prismadb.companion.findUnique({
 		where: {
 			id: params.companionId,
-			// userId,
+			userId,
 		},
 	});
 
 	const categories = await prismadb.category.findMany();
 
-	return (
-		<CompanionForm
-			categories={categories}
-			initialData={companion}
-		></CompanionForm>
-	);
+	return <CompanionForm categories={categories} initialData={companion} />;
 };
 export default CompanionIdPage;

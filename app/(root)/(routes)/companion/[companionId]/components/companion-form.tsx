@@ -77,6 +77,10 @@ const CompanionForm = ({ categories, initialData }: CompanionFormProps) => {
 	const { toast } = useToast();
 	const router = useRouter();
 
+	if (!initialData) {
+		router.replace('/companion/new');
+	}
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: initialData || {

@@ -17,9 +17,10 @@ export async function PATCH(
 			return new NextResponse('Companion ID is required', { status: 400 });
 		}
 
-		if (!user || !user.id || !user.firstName) {
+		if (!user || !user.id) {
 			return new NextResponse('Unauthorized', { status: 401 });
 		}
+
 		if (
 			!name ||
 			!description ||
@@ -36,11 +37,12 @@ export async function PATCH(
 		const companion = await prismadb.companion.update({
 			where: {
 				id: params.companionId,
+				userId: user.id,
 			},
 			data: {
 				categoryId,
 				userId: user.id,
-				userName: user.firstName,
+				userName: user.firstName || `NoName_${user.id.slice(-4)}`, // avoid error when data updated not match schema
 				src,
 				name,
 				description,
