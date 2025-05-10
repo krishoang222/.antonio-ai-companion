@@ -2,61 +2,61 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-	  previewFeatures = ["fullTextIndex", "fullTextSearch"]
-
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Category {
-  id            String @id @default(uuid())
-  name          String
-	companions 		Companion[]
+  id         String      @id @default(uuid())
+  name       String
+  companions Companion[]
 }
 
 model Companion {
-  id            String @id @default(uuid())
-  userId        String
-  userName      String
-  src           String
-  name          String @db.Text
-  description   String
-  instructions  String @db.Text
-  seed          String @db.Text
+  id           String @id @default(uuid())
+  userId       String
+  userName     String
+  src          String
+  name         String @db.Text
+  description  String
+  instructions String @db.Text
+  seed         String @db.Text
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  category      Category @relation(fields: [categoryId], references: [id])
-  categoryId    String
-	
-	messages				Message[]
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  messages Message[]
+  // TODO: need migrate as fullTextSearch not support for Postgre: https://www.prisma.io/docs/orm/prisma-client/queries/full-text-search#postgresql-1
+  // @@fulltext([name])
 
   @@index([categoryId])
-	@@fulltext([name])
-} 
-
-enum Role {
-	user
-	system
 }
 
-model Message{
-	id				String @id @default(uuid())
-	role			Role
-	content		String @db.Text
-	createdAt	DateTime @default(now())
-	updatedAt	DateTime @updatedAt
+enum Role {
+  user
+  system
+}
 
-	companionId	String
-	userId			String	
+model Message {
+  id        String   @id @default(uuid())
+  role      Role
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-	companion 	Companion @relation(fields: [companionId], references: [id], onDelete: Cascade)
+  companionId String
+  userId      String
 
-	@@index([companionId])
+  companion Companion @relation(fields: [companionId], references: [id], onDelete: Cascade)
+
+  @@index([companionId])
 }
